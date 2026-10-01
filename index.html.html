@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MarketLoop | ตลาดออนไลน์ที่เข้าใจคุณ</title>
+<meta name="description" content="MarketLoop แพลตฟอร์มซื้อขายออนไลน์ที่เชื่อมต่อผู้ซื้อและผู้ขายให้ใกล้กันมากขึ้น สะดวก ปลอดภัย ใช้งานง่ายทุกวัน">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Prompt:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B2545;
+  --navy-2:#13315C;
+  --navy-3:#1D4577;
+  --orange:#FF7A1A;
+  --orange-d:#D95F05;
+  --orange-l:#FFE9D6;
+  --green:#22A06B;
+  --green-d:#147A4E;
+  --green-l:#DDF3E8;
+  --white:#fff;
+  --mist:#F3F6FB;
+  --line:#DCE4EF;
+  --muted:#5B6B82;
+  --display:"Prompt","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai","Prompt",system-ui,sans-serif;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:var(--body);color:var(--navy);background:var(--white);line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+h1,h2,h3{font-family:var(--display);line-height:1.3;font-weight:600;letter-spacing:-.01em}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:600;font-family:var(--display);font-size:15px;transition:background .2s,transform .15s,border-color .2s}
+.btn:active{transform:scale(.97)}
+.btn-orange{background:var(--orange);color:var(--navy)}
+.btn-orange:hover{background:#ff8c38}
+.btn-navy{background:var(--navy);color:var(--white)}
+.btn-navy:hover{background:var(--navy-3)}
+.btn-line{border:1.5px solid currentColor}
+.btn-line:hover{background:rgba(255,255,255,.1)}
+
+/* header */
+.top{position:sticky;top:0;z-index:40;background:var(--navy);color:var(--white);border-bottom:1px solid rgba(255,255,255,.08)}
+.top .wrap{display:flex;align-items:center;gap:28px;height:70px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.02em}
+.logo svg{width:44px;height:26px}
+.logo b{color:var(--orange);font-weight:700}
+.nav{display:flex;gap:26px;margin-left:12px;font-size:15px}
+.nav a{opacity:.8;padding:4px 0;border-bottom:2px solid transparent;transition:opacity .2s,border-color .2s}
+.nav a:hover{opacity:1;border-color:var(--orange)}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:10px}
+.login{padding:9px 18px;font-size:14px;color:var(--white)}
+.cart-btn{position:relative;display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.1);font-size:14px;font-weight:500}
+.cart-btn:hover{background:rgba(255,255,255,.18)}
+.cart-count{min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--orange);color:var(--navy);font-size:12px;font-weight:600;display:grid;place-items:center}
+
+/* hero */
+.hero{background:var(--navy);color:var(--white);padding:64px 0 96px;overflow:hidden;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.3rem,5vw,3.9rem);font-weight:700;line-height:1.2}
+.hero .lead{margin-top:18px;font-size:18px;color:#C9D6EA;max-width:32em}
+.search{margin-top:32px;display:flex;background:var(--white);border-radius:999px;padding:6px;max-width:560px;box-shadow:0 0 0 4px rgba(255,122,26,.25)}
+.search input{flex:1;min-width:0;border:0;background:none;padding:10px 20px;color:var(--navy);font-size:16px}
+.search input::placeholder{color:#8593A8}
+.search input:focus{outline:none}
+.search:focus-within{box-shadow:0 0 0 4px var(--orange)}
+.hot{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:#9FB2CE}
+.hot button{padding:4px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.22);color:var(--white);font-size:14px;transition:background .2s}
+.hot button:hover{background:rgba(255,255,255,.12)}
+.loop-art{position:relative}
+.loop-art svg{width:100%;height:auto;overflow:visible}
+.loop-cap{text-align:center;color:#9FB2CE;font-size:14px;margin-top:6px}
+
+/* promise strip */
+.promise{position:relative;margin-top:-52px;z-index:2}
+.promise-box{background:var(--white);border-radius:20px;box-shadow:0 18px 40px -18px rgba(11,37,69,.35);display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line)}
+.promise-item{padding:26px 26px}
+.promise-item + .promise-item{border-left:1px solid var(--line)}
+.promise-item h3{font-size:17px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.promise-item p{font-size:14px;color:var(--muted);line-height:1.65}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+
+section{padding:88px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:36px}
+.sec-head h2{font-size:clamp(1.6rem,3vw,2.3rem)}
+.sec-head p{color:var(--muted);max-width:34em;margin-top:6px}
+
+/* categories */
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.cat{display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:var(--r);background:var(--mist);text-align:left;transition:background .2s,transform .2s}
+.cat:hover{background:var(--orange-l)}
+.cat .ico{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:28px;background:var(--white);flex:none}
+.cat strong{display:block;font-family:var(--display);font-weight:600;font-size:16px;line-height:1.3}
+.cat small{color:var(--muted);font-size:13px}
+
+/* products */
+.shop{background:var(--mist)}
+.toolbar{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:26px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{padding:8px 18px;border-radius:999px;background:var(--white);border:1px solid var(--line);font-size:14px;font-weight:500;transition:all .2s}
+.tab:hover{border-color:var(--navy)}
+.tab[aria-pressed="true"]{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.sort{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.sort select{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--white);font-size:14px}
+.ai-note{display:inline-flex;align-items:center;gap:8px;font-size:13px;background:var(--green-l);color:var(--green-d);padding:4px 12px;border-radius:999px;font-weight:500;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:var(--white);border-radius:var(--r);overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:var(--navy);box-shadow:0 12px 28px -16px rgba(11,37,69,.45)}
+.art{position:relative;aspect-ratio:1/.82;display:grid;place-items:center;font-size:68px}
+.off{position:absolute;left:12px;top:12px;background:var(--orange);color:var(--navy);font-size:12px;font-weight:600;font-family:var(--display);padding:2px 10px;border-radius:999px}
+.fav{position:absolute;right:10px;top:10px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;transition:transform .15s}
+.fav:hover{transform:scale(1.08)}
+.fav svg{width:18px;height:18px;fill:none;stroke:var(--navy);stroke-width:2}
+.fav[aria-pressed="true"] svg{fill:var(--orange);stroke:var(--orange)}
+.info{padding:14px 16px 16px;display:flex;flex-direction:column;gap:2px;flex:1}
+.info h3{font-size:15px;font-weight:500;font-family:var(--body);line-height:1.5}
+.seller{font-size:13px;color:var(--muted)}
+.meta{font-size:13px;color:var(--muted);display:flex;gap:10px;align-items:center}
+.star{color:var(--orange-d);font-weight:600}
+.price-row{margin-top:auto;padding-top:10px;display:flex;align-items:center;justify-content:space-between}
+.price{font-family:var(--display);font-weight:600;font-size:19px}
+.price s{display:block;font-family:var(--body);font-weight:400;font-size:12px;color:#8593A8;line-height:1.2}
+.add{width:40px;height:40px;border-radius:50%;background:var(--navy);color:var(--white);display:grid;place-items:center;font-size:22px;line-height:1;transition:background .2s,transform .15s}
+.add:hover{background:var(--orange);color:var(--navy)}
+.add:active{transform:scale(.9)}
+.empty{grid-column:1/-1;text-align:center;padding:56px 0;color:var(--muted)}
+
+/* how it works: two-sided loop */
+.sides{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:24px;overflow:hidden}
+.side{padding:48px 44px}
+.side h2{font-size:clamp(1.5rem,2.6vw,2rem);margin-bottom:10px}
+.side p.sub{margin-bottom:24px;max-width:28em}
+.side.buy{background:var(--green-l);color:#0B3B27}
+.side.sell{background:var(--navy-2);color:var(--white)}
+.side.sell p.sub{color:#C9D6EA}
+.steps{list-style:none;counter-reset:s;display:grid;gap:14px;margin-bottom:30px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start}
+.steps li::before{content:counter(s);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:600;font-size:15px}
+.buy .steps li::before{background:var(--green);color:var(--white)}
+.sell .steps li::before{background:var(--orange);color:var(--navy)}
+.steps b{font-family:var(--display);font-weight:600;display:block;line-height:1.5}
+.steps span{font-size:14px;opacity:.85}
+
+/* deals */
+.coupons{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.coupon{display:grid;grid-template-columns:1fr auto;border-radius:var(--r);background:var(--white);border:1.5px dashed var(--navy);overflow:hidden}
+.coupon .body{padding:20px 22px}
+.coupon .body strong{font-family:var(--display);font-size:26px;line-height:1.2;display:block}
+.coupon .body span{font-size:14px;color:var(--muted)}
+.coupon .code{margin-top:10px;font-family:var(--display);font-size:13px;letter-spacing:.06em;color:var(--orange-d);font-weight:600}
+.coupon button{padding:0 22px;background:var(--orange);font-family:var(--display);font-weight:600;color:var(--navy);writing-mode:horizontal-tb;transition:background .2s}
+.coupon button:hover{background:#ff8c38}
+.coupon.g button{background:var(--green);color:var(--white)}
+.coupon.g button:hover{background:var(--green-d)}
+.coupon.n button{background:var(--navy);color:var(--white)}
+.points{margin-top:22px;background:var(--navy);color:var(--white);border-radius:var(--r);padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.points p{color:#C9D6EA;font-size:15px}
+.points strong{font-family:var(--display);font-size:20px;display:block;color:var(--white)}
+
+/* delivery */
+.deliver{background:var(--navy);color:var(--white)}
+.deliver .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.deliver h2{font-size:clamp(1.6rem,3vw,2.3rem);margin-bottom:12px}
+.deliver p{color:#C9D6EA;max-width:30em}
+.ways{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+.ways span{padding:6px 16px;border-radius:999px;background:rgba(255,255,255,.1);font-size:14px}
+.track{background:var(--white);color:var(--navy);border-radius:20px;padding:28px}
+.track form{display:flex;gap:8px;margin-bottom:24px}
+.track input{flex:1;min-width:0;padding:12px 18px;border-radius:999px;border:1.5px solid var(--line);font-size:15px;background:var(--mist)}
+.track input:focus{outline:none;border-color:var(--navy)}
+.tl{list-style:none;position:relative;display:grid;gap:22px}
+.tl::before{content:"";position:absolute;left:13px;top:10px;bottom:10px;width:2px;background:var(--line)}
+.tl li{position:relative;padding-left:44px;min-height:28px}
+.tl li::before{content:"";position:absolute;left:5px;top:4px;width:18px;height:18px;border-radius:50%;background:var(--white);border:2px solid var(--line)}
+.tl li.done::before{background:var(--green);border-color:var(--green)}
+.tl li.now::before{background:var(--orange);border-color:var(--orange);box-shadow:0 0 0 6px var(--orange-l)}
+.tl b{font-family:var(--display);font-weight:600;display:block;line-height:1.4}
+.tl small{color:var(--muted);font-size:13px}
+.tl li:not(.done):not(.now) b{color:#8593A8}
+.eta{margin-top:22px;padding:12px 16px;border-radius:12px;background:var(--mist);font-size:14px}
+
+/* reviews */
+.reviews{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:20px}
+.rev{padding:26px;border-radius:var(--r);background:var(--mist);display:flex;flex-direction:column;gap:14px}
+.rev:first-child{background:var(--orange-l)}
+.rev q{quotes:none;font-size:17px;line-height:1.7}
+.rev:first-child q{font-family:var(--display);font-size:20px;font-weight:500;line-height:1.6}
+.who{display:flex;align-items:center;gap:12px;margin-top:auto;font-size:14px}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:600;color:var(--white)}
+.who small{display:block;color:var(--muted)}
+.stars{color:var(--orange-d);letter-spacing:2px;font-size:15px}
+
+/* protection */
+.protect{background:var(--green-l);padding:64px 0}
+.protect .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.protect h2{font-size:clamp(1.5rem,2.8vw,2.1rem);color:#0B3B27;margin-bottom:10px}
+.protect p{color:#1F5A40;max-width:30em}
+.checks{list-style:none;display:grid;gap:12px}
+.checks li{background:var(--white);border-radius:12px;padding:14px 18px;display:flex;gap:14px;align-items:center;font-weight:500}
+.checks i{width:28px;height:28px;border-radius:50%;background:var(--green);flex:none;display:grid;place-items:center}
+.checks svg{width:14px;height:14px;stroke:var(--white);stroke-width:3;fill:none}
+
+/* cta + footer */
+.cta{padding:80px 0;text-align:center}
+.cta h2{font-size:clamp(1.8rem,3.6vw,2.8rem);margin-bottom:12px}
+.cta p{color:var(--muted);margin-bottom:28px}
+.cta .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+footer{background:var(--navy);color:#C9D6EA;padding:56px 0 30px;font-size:14px}
+.foot{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:32px}
+footer .logo{color:var(--white);margin-bottom:12px}
+footer h4{font-family:var(--display);color:var(--white);font-weight:600;font-size:15px;margin-bottom:10px}
+footer ul{list-style:none;display:grid;gap:6px}
+footer a:hover{color:var(--orange)}
+.copy{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#8FA3C2}
+
+/* cart drawer */
+.veil{position:fixed;inset:0;background:rgba(11,37,69,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+.veil.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--white);z-index:60;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.drawer.on{transform:none}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--line)}
+.drawer h2{font-size:20px}
+.x{width:38px;height:38px;border-radius:50%;background:var(--mist);font-size:20px;display:grid;place-items:center}
+.lines{flex:1;overflow:auto;padding:8px 24px}
+.line{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.line .th{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;font-size:30px}
+.line b{font-weight:500;font-size:14px;line-height:1.45;display:block}
+.qty{display:inline-flex;align-items:center;gap:10px;margin-top:4px;font-size:14px}
+.qty button{width:26px;height:26px;border-radius:50%;background:var(--mist);font-weight:600}
+.qty button:hover{background:var(--orange-l)}
+.drawer footer{background:var(--mist);color:var(--navy);padding:20px 24px}
+.tot{display:flex;justify-content:space-between;font-family:var(--display);font-weight:600;font-size:18px;margin-bottom:4px}
+.pts{font-size:13px;color:var(--green-d);margin-bottom:14px}
+.drawer footer .btn{width:100%}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);background:var(--navy);color:var(--white);padding:12px 22px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:all .3s;z-index:70;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* auth */
+[hidden]{display:none!important}
+.user{position:relative}
+.user-btn{display:flex;align-items:center;gap:10px;padding:4px 16px 4px 4px;border-radius:999px;background:rgba(255,255,255,.1);font-size:14px;font-weight:500}
+.user-btn:hover{background:rgba(255,255,255,.18)}
+.ava{width:34px;height:34px;border-radius:50%;background:var(--orange);color:var(--navy);display:grid;place-items:center;font-family:var(--display);font-weight:600}
+.pop{position:absolute;right:0;top:calc(100% + 12px);width:270px;background:var(--white);color:var(--navy);border-radius:var(--r);border:1px solid var(--line);box-shadow:0 20px 40px -16px rgba(11,37,69,.45);padding:18px;display:none;z-index:45}
+.pop.on{display:block}
+.pop b{font-family:var(--display);font-weight:600;display:block;line-height:1.4}
+.pop small{color:var(--muted);font-size:13px;word-break:break-all}
+.pbox{margin:14px 0;padding:12px 14px;border-radius:12px;background:var(--orange-l);display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.pbox strong{font-family:var(--display);font-size:20px}
+.pop .btn{width:100%}
+dialog.auth{border:0;border-radius:22px;padding:0;width:min(860px,calc(100% - 24px));overflow:hidden;color:var(--navy);margin:auto;background:var(--white)}
+dialog.auth::backdrop{background:rgba(11,37,69,.62)}
+.auth-in{display:grid;grid-template-columns:.85fr 1.15fr;min-height:520px}
+.auth-side{background:var(--navy);color:var(--white);padding:40px 32px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.auth-side h2{font-size:26px}
+.auth-side p{color:#C9D6EA;font-size:15px}
+.auth-side ul{list-style:none;display:grid;gap:10px;font-size:14px;color:#C9D6EA}
+.auth-side li{display:flex;gap:10px;align-items:center}
+.auth-side li i{width:8px;height:8px;border-radius:50%;background:var(--orange);flex:none}
+.auth-main{padding:36px;position:relative}
+.auth-x{position:absolute;right:14px;top:14px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--mist);border-radius:999px;padding:4px;margin:6px 0 22px}
+.seg button{padding:9px;border-radius:999px;font-family:var(--display);font-weight:600;font-size:15px;color:var(--muted);transition:background .2s}
+.seg button[aria-selected="true"]{background:var(--white);color:var(--navy);box-shadow:0 1px 4px rgba(11,37,69,.18)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:14px;font-weight:500;margin-bottom:4px}
+.field input{width:100%;padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--white);font-size:15px}
+.field input:focus{outline:none;border-color:var(--navy)}
+.field.bad input{border-color:#C8321F}
+.err{color:#C8321F;font-size:13px;margin-top:4px}
+.pw{position:relative}
+.pw input{padding-right:64px}
+.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);padding:6px 10px}
+.form-msg{padding:10px 14px;border-radius:12px;background:var(--orange-l);font-size:14px;margin-bottom:16px}
+.form-msg.bad{background:#FBE3DF;color:#8F2314}
+.auth-main .btn{width:100%;margin-top:6px}
+.demo{margin-top:16px;font-size:13px;color:var(--muted);text-align:center}
+.demo button{color:var(--orange-d);font-weight:600;text-decoration:underline}
+
+@media (max-width:1020px){
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .cats{grid-template-columns:repeat(2,1fr)}
+  .promise-box{grid-template-columns:1fr 1fr}
+  .promise-item:nth-child(3){border-left:0}
+  .promise-item:nth-child(n+3){border-top:1px solid var(--line)}
+  .reviews{grid-template-columns:1fr 1fr}
+  .reviews .rev:first-child{grid-column:1/-1}
+}
+@media (max-width:860px){
+  .nav{display:none}
+  .login{padding:9px 12px}
+  .hero .wrap,.deliver .wrap,.protect .wrap,.sides{grid-template-columns:1fr}
+  .hero{padding-top:44px}
+  .loop-art{order:2}
+  .side{padding:36px 26px}
+  .coupons{grid-template-columns:1fr}
+  .foot{grid-template-columns:1fr 1fr}
+}
+@media (max-width:620px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .art{font-size:52px}
+  section{padding:64px 0}
+  .reviews{grid-template-columns:1fr}
+  .cats{grid-template-columns:1fr}
+  .promise-box{grid-template-columns:1fr}
+  .promise-item + .promise-item{border-left:0;border-top:1px solid var(--line)}
+  .top .wrap{gap:12px}
+  .cart-btn span.lbl{display:none}
+  .uname{display:none}
+  .user-btn{padding:4px}
+  .auth-in{grid-template-columns:1fr}
+  .auth-side{display:none}
+  .auth-main{padding:28px 22px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 44 26">
+    <path d="M22 13C26 5 40 5 40 13C40 21 26 21 22 13" fill="none" stroke="#22A06B" stroke-width="4" stroke-linecap="round"/>
+    <path d="M22 13C18 5 4 5 4 13C4 21 18 21 22 13" fill="none" stroke="#FF7A1A" stroke-width="4" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#" class="logo" aria-label="MarketLoop หน้าแรก"><svg><use href="#mark"/></svg><span>Market<b>Loop</b></span></a>
+    <nav class="nav" aria-label="เมนูหลัก">
+      <a href="#categories">หมวดหมู่</a>
+      <a href="#products">สินค้าแนะนำ</a>
+      <a href="#deals">โปรโมชั่น</a>
+      <a href="#delivery">จัดส่ง</a>
+      <a href="#sell">เปิดร้านขายของ</a>
+    </nav>
+    <div class="top-actions">
+      <button class="login" id="loginBtn">เข้าสู่ระบบ</button>
+      <div class="user" id="userBox" hidden>
+        <button class="user-btn" id="userBtn" aria-expanded="false" aria-haspopup="true"><span class="ava" id="ava">ม</span><span class="uname" id="uname"></span></button>
+        <div class="pop" id="pop">
+          <b id="pName"></b><small id="pMail"></small>
+          <div class="pbox"><span>แต้มสะสม</span><strong id="pPts">0</strong></div>
+          <button class="btn btn-navy" id="logout">ออกจากระบบ</button>
+        </div>
+      </div>
+      <button class="cart-btn" id="openCart" aria-label="เปิดตะกร้าสินค้า">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6"/></svg>
+        <span class="lbl">ตะกร้า</span><span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero" style="padding-bottom:96px">
+  <div class="wrap">
+    <div>
+      <h1>ตลาดออนไลน์<br>ที่เข้าใจคุณ</h1>
+      <p class="lead">ซื้อ ขาย เชื่อมต่อได้ไม่สิ้นสุด สินค้าหลากหลาย ราคาดี ปลอดภัย ซื้อขายได้ทุกที่ ทุกเวลา</p>
+      <form class="search" id="heroSearch" role="search">
+        <label class="sr" for="q">ค้นหาสินค้า</label>
+        <input id="q" type="search" placeholder="ค้นหาสินค้า เช่น หูฟัง รองเท้า เซรั่ม" autocomplete="off">
+        <button class="btn btn-orange" type="submit">ค้นหา</button>
+      </form>
+      <div class="hot">
+        <span>ยอดนิยม</span>
+        <button type="button" data-q="หูฟัง">หูฟัง</button>
+        <button type="button" data-q="รองเท้า">รองเท้า</button>
+        <button type="button" data-q="เซรั่ม">เซรั่ม</button>
+        <button type="button" data-q="กาแฟ">กาแฟ</button>
+      </div>
+    </div>
+
+    <div class="loop-art">
+      <svg id="loopSvg" viewBox="0 0 520 300" role="img" aria-label="ภาพวนลูปสินค้าระหว่างผู้ซื้อและผู้ขาย">
+        <defs>
+          <path id="track" d="M260 150C310 70 480 70 480 150C480 230 310 230 260 150C210 70 40 70 40 150C40 230 210 230 260 150Z"/>
+        </defs>
+        <use href="#track" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round"/>
+        <g>
+          <circle cx="130" cy="150" r="46" fill="#FF7A1A"/>
+          <text x="130" y="146" text-anchor="middle" font-family="Prompt,sans-serif" font-weight="600" font-size="19" fill="#0B2545">ผู้ซื้อ</text>
+          <text x="130" y="168" text-anchor="middle" font-family="IBM Plex Sans Thai,sans-serif" font-size="12" fill="#0B2545">ซื้อสบายใจ</text>
+        </g>
+        <g>
+          <circle cx="390" cy="150" r="46" fill="#22A06B"/>
+          <text x="390" y="146" text-anchor="middle" font-family="Prompt,sans-serif" font-weight="600" font-size="19" fill="#fff">ผู้ขาย</text>
+          <text x="390" y="168" text-anchor="middle" font-family="IBM Plex Sans Thai,sans-serif" font-size="12" fill="#fff">ขายง่ายทุกวัน</text>
+        </g>
+        <g id="riders">
+          <g><animateMotion dur="16s" begin="0s" repeatCount="indefinite"><mpath href="#track"/></animateMotion>
+            <rect x="-30" y="-20" width="60" height="40" rx="10" fill="#fff"/><text y="8" text-anchor="middle" font-size="24">🎧</text></g>
+          <g><animateMotion dur="16s" begin="-4s" repeatCount="indefinite"><mpath href="#track"/></animateMotion>
+            <rect x="-30" y="-20" width="60" height="40" rx="10" fill="#fff"/><text y="8" text-anchor="middle" font-size="24">👟</text></g>
+          <g><animateMotion dur="16s" begin="-8s" repeatCount="indefinite"><mpath href="#track"/></animateMotion>
+            <rect x="-30" y="-20" width="60" height="40" rx="10" fill="#fff"/><text y="8" text-anchor="middle" font-size="24">🪴</text></g>
+          <g><animateMotion dur="16s" begin="-12s" repeatCount="indefinite"><mpath href="#track"/></animateMotion>
+            <rect x="-30" y="-20" width="60" height="40" rx="10" fill="#fff"/><text y="8" text-anchor="middle" font-size="24">📦</text></g>
+        </g>
+      </svg>
+      <p class="loop-cap">สินค้าไหลวนระหว่างคนซื้อและคนขาย ไม่มีที่สิ้นสุด</p>
+    </div>
+  </div>
+</section>
+
+<div class="promise">
+  <div class="wrap">
+    <div class="promise-box">
+      <div class="promise-item"><h3><i class="dot" style="background:var(--orange)"></i>สินค้าหลากหลาย</h3><p>ตั้งแต่ของใช้ประจำวันถึงของหายาก จากร้านค้าทั่วประเทศ</p></div>
+      <div class="promise-item"><h3><i class="dot" style="background:var(--green)"></i>ราคาดี</h3><p>เทียบราคาได้ทันที พร้อมโปรโมชั่นและโค้ดส่วนลดทุกสัปดาห์</p></div>
+      <div class="promise-item"><h3><i class="dot" style="background:var(--navy-3)"></i>ปลอดภัย</h3><p>เงินพักไว้กลางทางจนกว่าจะได้รับของ ตรวจสอบร้านค้าทุกร้าน</p></div>
+      <div class="promise-item"><h3><i class="dot" style="background:var(--orange)"></i>ทุกที่ ทุกเวลา</h3><p>ใช้งานได้ทั้งมือถือและคอม ซื้อขายได้ 24 ชั่วโมง</p></div>
+    </div>
+  </div>
+</div>
+
+<section id="categories">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>เลือกดูตามหมวดหมู่</h2><p>แตะหมวดที่สนใจ แล้วดูสินค้าจากผู้ขายได้เลย</p></div>
+    </div>
+    <div class="cats" id="cats"></div>
+  </div>
+</section>
+
+<section class="shop" id="products">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="ai-note">แนะนำโดยระบบ AI จากสิ่งที่คุณสนใจ</span>
+        <h2>สินค้าแนะนำสำหรับคุณ</h2>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="tabs" id="tabs" role="group" aria-label="กรองตามหมวดหมู่"></div>
+      <label class="sort">เรียงตาม
+        <select id="sort">
+          <option value="rec">แนะนำ</option>
+          <option value="best">ขายดี</option>
+          <option value="low">ราคาต่ำไปสูง</option>
+          <option value="high">ราคาสูงไปต่ำ</option>
+        </select>
+      </label>
+    </div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="sell">
+  <div class="wrap">
+    <div class="sides">
+      <div class="side buy">
+        <h2>ซื้อของสบายใจ</h2>
+        <p class="sub">หาของที่ใช่ จ่ายปลอดภัย รอรับของที่บ้าน</p>
+        <ol class="steps">
+          <li><div><b>ค้นหาและเทียบ</b><span>ดูรีวิวและคะแนนร้านก่อนตัดสินใจ</span></div></li>
+          <li><div><b>ชำระเงินผ่านระบบกลาง</b><span>เงินถึงร้านค้าเมื่อคุณกดรับของแล้ว</span></div></li>
+          <li><div><b>ติดตามพัสดุ</b><span>รู้ตำแหน่งของทุกขั้นตอนแบบเรียลไทม์</span></div></li>
+        </ol>
+        <a href="#products" class="btn btn-navy">เริ่มเลือกซื้อ</a>
+      </div>
+      <div class="side sell">
+        <h2>ขายง่ายทุกวัน</h2>
+        <p class="sub">เปิดร้านฟรี มีระบบจัดการออเดอร์และขนส่งให้ในที่เดียว</p>
+        <ol class="steps">
+          <li><div><b>เปิดร้านใน 5 นาที</b><span>ยืนยันตัวตนครั้งเดียว ใช้ได้ตลอด</span></div></li>
+          <li><div><b>ลงสินค้า</b><span>ถ่ายรูป ใส่ราคา ระบบช่วยแนะนำคำอธิบายและหมวดหมู่</span></div></li>
+          <li><div><b>รับออเดอร์และรับเงิน</b><span>เลือกขนส่งเอง พัสดุถึงมือแล้วเงินเข้าบัญชี</span></div></li>
+        </ol>
+        <a href="#cta" class="btn btn-orange">เปิดร้านฟรี</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="deals" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>โปรโมชั่นและโค้ดส่วนลด</h2><p>คัดลอกโค้ดแล้วใช้ตอนชำระเงินได้ทันที</p></div>
+    </div>
+    <div class="coupons">
+      <div class="coupon"><div class="body"><strong>ลด 100 บาท</strong><span>เมื่อซื้อครบ 800 บาท</span><div class="code">LOOP100</div></div><button data-code="LOOP100">คัดลอก</button></div>
+      <div class="coupon g"><div class="body"><strong>ส่งฟรี</strong><span>ทุกออเดอร์ในสัปดาห์นี้</span><div class="code">FREESHIP</div></div><button data-code="FREESHIP">คัดลอก</button></div>
+      <div class="coupon n"><div class="body"><strong>ลด 15%</strong><span>สำหรับผู้ใช้ใหม่ สูงสุด 200 บาท</span><div class="code">HELLOLOOP</div></div><button data-code="HELLOLOOP">คัดลอก</button></div>
+    </div>
+    <div class="points">
+      <div><strong>สะสมแต้มทุกครั้งที่ซื้อ</strong><p>ทุก 10 บาทได้ 1 แต้ม เอาไปแลกเป็นส่วนลดสำหรับลูกค้าประจำ</p></div>
+      <a href="#products" class="btn btn-orange">ไปช้อปเก็บแต้ม</a>
+    </div>
+  </div>
+</section>
+
+<section class="deliver" id="delivery">
+  <div class="wrap">
+    <div>
+      <h2>ของถึงมือ รู้ทุกขั้นตอน</h2>
+      <p>มีระบบจัดส่งหลายรูปแบบ ติดตามสถานะแบบเรียลไทม์ และมีพาร์ทเนอร์ขนส่งครอบคลุมทั่วไทย</p>
+      <div class="ways"><span>ส่งธรรมดา</span><span>ส่งด่วนวันถัดไป</span><span>รับที่จุดบริการ</span><span>เก็บเงินปลายทาง</span></div>
+    </div>
+    <div class="track">
+      <form id="trackForm">
+        <label class="sr" for="tn">เลขพัสดุ</label>
+        <input id="tn" value="ML240930123" placeholder="ใส่เลขพัสดุ">
+        <button class="btn btn-navy" type="submit">ติดตาม</button>
+      </form>
+      <ol class="tl" id="tl"></ol>
+      <div class="eta" id="eta"></div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2>คนซื้อและคนขายพูดถึงเรา</h2><p>รีวิวและคะแนนผู้ขายมาจากการซื้อขายจริงเท่านั้น</p></div>
+    </div>
+    <div class="reviews">
+      <figure class="rev">
+        <div class="stars" aria-label="5 ดาว">★★★★★</div>
+        <q>สั่งเช้า บ่ายได้ของ ร้านตอบไว แถมมีตัวเลขติดตามพัสดุให้ดูตลอด ไม่ต้องเดาว่าของอยู่ไหน</q>
+        <figcaption class="who"><span class="av" style="background:var(--orange-d)">พ</span><span>พิมพ์ชนก ส.<small>ผู้ซื้อ กรุงเทพฯ</small></span></figcaption>
+      </figure>
+      <figure class="rev">
+        <div class="stars" aria-label="5 ดาว">★★★★★</div>
+        <q>เปิดร้านวันเดียวก็เริ่มมีออเดอร์ ระบบช่วยเรื่องขนส่งทำให้ไม่ต้องนั่งแพ็กเช็กเองทั้งคืน</q>
+        <figcaption class="who"><span class="av" style="background:var(--green)">ธ</span><span>ธนากร ม.<small>ผู้ขาย เชียงใหม่</small></span></figcaption>
+      </figure>
+      <figure class="rev">
+        <div class="stars" aria-label="4 ดาว">★★★★☆</div>
+        <q>เคลมสินค้าง่ายกว่าที่คิด แจ้งไม่กี่ขั้นตอนก็ได้เงินคืน ใช้แล้วสบายใจ</q>
+        <figcaption class="who"><span class="av" style="background:var(--navy-3)">ก</span><span>กัญญา ว.<small>ผู้ซื้อ ขอนแก่น</small></span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<div class="protect">
+  <div class="wrap">
+    <div>
+      <h2>ซื้อแล้วไม่ถูกใจ เรามีทางออกให้</h2>
+      <p>ระบบคืนสินค้าและเคลมสินค้าอยู่ในแอปเดียวกัน ทุกคำขอมีสถานะให้ติดตาม</p>
+    </div>
+    <ul class="checks">
+      <li><i><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></i>ขอคืนสินค้าได้ภายใน 7 วัน</li>
+      <li><i><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></i>เคลมสินค้าชำรุดพร้อมแนบรูปได้ในแอป</li>
+      <li><i><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></i>เงินคืนเข้าช่องทางเดิมหลังตรวจสอบเสร็จ</li>
+    </ul>
+  </div>
+</div>
+
+<section class="cta" id="cta">
+  <div class="wrap">
+    <h2>พร้อมเข้าลูปไปกับเราหรือยัง</h2>
+    <p>สมัครฟรี ใช้ได้ทั้งซื้อและขายในบัญชีเดียว</p>
+    <div class="row">
+      <a href="#products" class="btn btn-orange">เริ่มซื้อของ</a>
+      <a href="#sell" class="btn btn-navy">เปิดร้านของคุณ</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="logo"><svg><use href="#mark"/></svg><span>Market<b>Loop</b></span></div>
+        <p>แพลตฟอร์มซื้อขายออนไลน์ที่เชื่อมต่อผู้ซื้อและผู้ขายให้ใกล้กันมากขึ้น</p>
+      </div>
+      <div><h4>ผู้ซื้อ</h4><ul><li><a href="#products">สินค้าแนะนำ</a></li><li><a href="#deals">โค้ดส่วนลด</a></li><li><a href="#delivery">ติดตามพัสดุ</a></li></ul></div>
+      <div><h4>ผู้ขาย</h4><ul><li><a href="#sell">เปิดร้านฟรี</a></li><li><a href="#sell">คู่มือผู้ขาย</a></li><li><a href="#delivery">ขนส่งที่รองรับ</a></li></ul></div>
+      <div><h4>ช่วยเหลือ</h4><ul><li><a href="#">ศูนย์ช่วยเหลือ</a></li><li><a href="#">คืนสินค้า/เคลม</a></li><li><a href="#">ติดต่อเรา</a></li></ul></div>
+    </div>
+    <div class="copy"><span>© 2026 MarketLoop สงวนลิขสิทธิ์</span><span>ซื้อ ขาย เชื่อมต่อได้ไม่สิ้นสุด</span></div>
+  </div>
+</footer>
+
+<div class="veil" id="veil"></div>
+<aside class="drawer" id="drawer" aria-label="ตะกร้าสินค้า" aria-hidden="true">
+  <header><h2>ตะกร้าของคุณ</h2><button class="x" id="closeCart" aria-label="ปิดตะกร้า">×</button></header>
+  <div class="lines" id="lines"></div>
+  <footer>
+    <div class="tot"><span>รวมทั้งหมด</span><span id="total">฿0</span></div>
+    <div class="pts" id="pts"></div>
+    <button class="btn btn-orange" id="checkout">ชำระเงิน</button>
+  </footer>
+</aside>
+<dialog class="auth" id="auth" aria-labelledby="authTitle">
+  <div class="auth-in">
+    <div class="auth-side">
+      <div class="logo"><svg><use href="#mark"/></svg><span>Market<b>Loop</b></span></div>
+      <h2 id="authTitle">เข้าลูปไปกับเรา</h2>
+      <p>บัญชีเดียวใช้ได้ทั้งซื้อและขาย</p>
+      <ul><li><i></i>สะสมแต้มทุกออเดอร์</li><li><i></i>ติดตามพัสดุและประวัติสั่งซื้อ</li><li><i></i>สมัครใหม่รับ 100 แต้มทันที</li></ul>
+    </div>
+    <div class="auth-main">
+      <button class="x auth-x" id="authClose" aria-label="ปิด" type="button">×</button>
+      <div class="seg" role="tablist">
+        <button type="button" role="tab" id="tabLogin" aria-selected="true">เข้าสู่ระบบ</button>
+        <button type="button" role="tab" id="tabReg" aria-selected="false">สมัครสมาชิก</button>
+      </div>
+      <div class="form-msg" id="authMsg" role="alert" hidden></div>
+
+      <form id="loginForm" novalidate>
+        <div class="field"><label for="lEmail">อีเมล</label><input id="lEmail" type="email" autocomplete="email" placeholder="you@example.com"><div class="err" hidden></div></div>
+        <div class="field"><label for="lPass">รหัสผ่าน</label><div class="pw"><input id="lPass" type="password" autocomplete="current-password" placeholder="รหัสผ่านของคุณ"><button type="button" class="showpw" aria-label="แสดงหรือซ่อนรหัสผ่าน">แสดง</button></div><div class="err" hidden></div></div>
+        <button class="btn btn-navy" type="submit">เข้าสู่ระบบ</button>
+        <p class="demo">อยากลองดูก่อน <button type="button" id="fillDemo">ใช้บัญชีตัวอย่าง</button></p>
+      </form>
+
+      <form id="regForm" novalidate hidden>
+        <div class="field"><label for="rName">ชื่อที่แสดง</label><input id="rName" type="text" autocomplete="name" placeholder="เช่น พิมพ์ชนก"><div class="err" hidden></div></div>
+        <div class="field"><label for="rEmail">อีเมล</label><input id="rEmail" type="email" autocomplete="email" placeholder="you@example.com"><div class="err" hidden></div></div>
+        <div class="field"><label for="rPass">รหัสผ่าน (อย่างน้อย 8 ตัว)</label><div class="pw"><input id="rPass" type="password" autocomplete="new-password"><button type="button" class="showpw" aria-label="แสดงหรือซ่อนรหัสผ่าน">แสดง</button></div><div class="err" hidden></div></div>
+        <div class="field"><label for="rPass2">ยืนยันรหัสผ่าน</label><input id="rPass2" type="password" autocomplete="new-password"><div class="err" hidden></div></div>
+        <button class="btn btn-orange" type="submit">สมัครและรับ 100 แต้ม</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const CATS=[
+ {n:"อิเล็กทรอนิกส์",e:"🎧"},{n:"แฟชั่น",e:"👟"},{n:"บ้านและสวน",e:"🪴"},{n:"ความงาม",e:"🧴"},
+ {n:"กีฬา",e:"🧘"},{n:"แม่และเด็ก",e:"🧸"},{n:"อาหารและเครื่องดื่ม",e:"☕"},{n:"หนังสือ",e:"📚"}
+];
+const P=[
+ {id:1,n:"หูฟังบลูทูธตัดเสียงรบกวน",c:"อิเล็กทรอนิกส์",s:"ร้านซาวด์ดี",p:1290,o:1890,r:4.8,k:2340,e:"🎧",bg:"#DCE9FB"},
+ {id:2,n:"รองเท้าวิ่งน้ำหนักเบา",c:"แฟชั่น",s:"Run Hub",p:990,o:1490,r:4.7,k:1820,e:"👟",bg:"#FFE9D6"},
+ {id:3,n:"กระถางต้นไม้เซรามิกพร้อมจาน",c:"บ้านและสวน",s:"สวนเล็กเล็ก",p:249,o:349,r:4.9,k:960,e:"🪴",bg:"#DDF3E8"},
+ {id:4,n:"เซรั่มบำรุงผิวหน้า 30 มล.",c:"ความงาม",s:"Glow Lab",p:459,o:690,r:4.6,k:3120,e:"🧴",bg:"#F6E4F0"},
+ {id:5,n:"เสื่อโยคะกันลื่น",c:"กีฬา",s:"ฟิตสบาย",p:390,o:590,r:4.7,k:1100,e:"🧘",bg:"#DDF3E8"},
+ {id:6,n:"ตุ๊กตาหมีผ้านุ่ม",c:"แม่และเด็ก",s:"บ้านของเล่น",p:329,o:429,r:4.8,k:780,e:"🧸",bg:"#FFF1C9"},
+ {id:7,n:"เมล็ดกาแฟคั่วกลาง 250 ก.",c:"อาหารและเครื่องดื่ม",s:"ไร่ดอยเหนือ",p:280,o:340,r:4.9,k:2680,e:"☕",bg:"#F2E2D2"},
+ {id:8,n:"นิยายขายดีชุดพิเศษ",c:"หนังสือ",s:"ร้านหนังสือใจดี",p:225,o:295,r:4.5,k:540,e:"📚",bg:"#DCE9FB"},
+ {id:9,n:"สมาร์ทวอตช์วัดการนอน",c:"อิเล็กทรอนิกส์",s:"Gadget Go",p:1890,o:2590,r:4.6,k:1490,e:"⌚",bg:"#E6ECF5"},
+ {id:10,n:"กระเป๋าเป้กันน้ำ 20 ลิตร",c:"แฟชั่น",s:"เดินทางสบาย",p:690,o:890,r:4.7,k:1260,e:"🎒",bg:"#FFE9D6"},
+ {id:11,n:"น้ำผึ้งป่าแท้ 500 มล.",c:"อาหารและเครื่องดื่ม",s:"ป่าน่าน",p:320,o:380,r:4.8,k:1970,e:"🍯",bg:"#FFF1C9"},
+ {id:12,n:"ชุดกล่องเก็บของพับได้ 3 ใบ",c:"บ้านและสวน",s:"จัดบ้านดี",p:359,o:499,r:4.6,k:830,e:"📦",bg:"#E6ECF5"}
+];
+const $=s=>document.querySelector(s);
+const fmt=n=>"฿"+n.toLocaleString("th-TH");
+const state={cat:"ทั้งหมด",q:"",sort:"rec"};
+const fav=new Set(); const cart=new Map(); let user=null;
+
+/* categories */
+$("#cats").innerHTML=CATS.map(c=>`<button class="cat" data-c="${c.n}"><span class="ico">${c.e}</span><span><strong>${c.n}</strong><small>${P.filter(p=>p.c===c.n).length} รายการแนะนำ</small></span></button>`).join("");
+$("#cats").addEventListener("click",e=>{const b=e.target.closest(".cat");if(!b)return;state.cat=b.dataset.c;state.q="";$("#q").value="";render();$("#products").scrollIntoView();});
+
+/* tabs */
+function renderTabs(){
+  $("#tabs").innerHTML=["ทั้งหมด",...CATS.map(c=>c.n)].map(n=>`<button class="tab" data-c="${n}" aria-pressed="${state.cat===n}">${n}</button>`).join("");
+}
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;state.cat=b.dataset.c;render();});
+$("#sort").addEventListener("change",e=>{state.sort=e.target.value;render();});
+
+/* grid */
+function render(){
+  renderTabs();
+  let list=P.filter(p=>(state.cat==="ทั้งหมด"||p.c===state.cat)&&(!state.q||(p.n+p.c+p.s).includes(state.q)));
+  if(state.sort==="best")list.sort((a,b)=>b.k-a.k);
+  if(state.sort==="low")list.sort((a,b)=>a.p-b.p);
+  if(state.sort==="high")list.sort((a,b)=>b.p-a.p);
+  $("#grid").innerHTML=list.length?list.map(p=>{
+    const d=Math.round((1-p.p/p.o)*100);
+    return `<article class="card">
+      <div class="art" style="background:${p.bg}"><span aria-hidden="true">${p.e}</span>
+        <span class="off">ลด ${d}%</span>
+        <button class="fav" data-f="${p.id}" aria-pressed="${fav.has(p.id)}" aria-label="เก็บสินค้าที่ชอบ"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.3-9A5.3 5.3 0 0 1 12 6a5.3 5.3 0 0 1 9.3 6c-2.3 4.400-9.300 9-9.300 9z"/></svg></button>
+      </div>
+      <div class="info"><h3>${p.n}</h3><div class="seller">${p.s}</div>
+        <div class="meta"><span class="star">★ ${p.r}</span><span>ขายแล้ว ${p.k.toLocaleString("th-TH")}</span></div>
+        <div class="price-row"><div class="price"><s>${fmt(p.o)}</s>${fmt(p.p)}</div>
+        <button class="add" data-a="${p.id}" aria-label="ใส่ตะกร้า ${p.n}">+</button></div></div>
+    </article>`}).join(""):`<div class="empty">ไม่พบสินค้าที่ตรงกับ "${state.q}" ลองใช้คำอื่น หรือเลือกดูตามหมวดหมู่</div>`;
+}
+$("#grid").addEventListener("click",e=>{
+  const f=e.target.closest(".fav"),a=e.target.closest(".add");
+  if(f){const id=+f.dataset.f;fav.has(id)?fav.delete(id):fav.add(id);f.setAttribute("aria-pressed",fav.has(id));}
+  if(a){const id=+a.dataset.a;cart.set(id,(cart.get(id)||0)+1);updateCart();toast("เพิ่มลงตะกร้าแล้ว");}
+});
+
+/* search */
+function search(q){state.q=q.trim();state.cat="ทั้งหมด";render();$("#products").scrollIntoView();}
+$("#heroSearch").addEventListener("submit",e=>{e.preventDefault();search($("#q").value);});
+document.querySelectorAll(".hot button").forEach(b=>b.addEventListener("click",()=>{$("#q").value=b.dataset.q;search(b.dataset.q);}));
+
+/* cart */
+function updateCart(){
+  let n=0,t=0;
+  cart.forEach((q,id)=>{n+=q;t+=q*P.find(p=>p.id===id).p;});
+  $("#cartCount").textContent=n;$("#total").textContent=fmt(t);
+  $("#pts").textContent=n?(user?`ออเดอร์นี้ได้รับ ${Math.floor(t/10)} แต้มสะสม`:`เข้าสู่ระบบเพื่อรับ ${Math.floor(t/10)} แต้มจากออเดอร์นี้`):"";
+  $("#lines").innerHTML=n?[...cart].map(([id,q])=>{const p=P.find(x=>x.id===id);
+    return `<div class="line"><div class="th" style="background:${p.bg}">${p.e}</div>
+    <div><b>${p.n}</b><div class="qty"><button data-m="${id}" aria-label="ลดจำนวน">−</button><span>${q}</span><button data-p="${id}" aria-label="เพิ่มจำนวน">+</button></div></div>
+    <b>${fmt(p.p*q)}</b></div>`}).join(""):`<p style="padding:40px 0;text-align:center;color:var(--muted)">ตะกร้ายังว่างอยู่ เลือกสินค้าที่ชอบแล้วกด + ได้เลย</p>`;
+}
+$("#lines").addEventListener("click",e=>{
+  const m=e.target.dataset.m,p=e.target.dataset.p;
+  if(m){const id=+m,q=cart.get(id)-1;q<=0?cart.delete(id):cart.set(id,q);updateCart();}
+  if(p){const id=+p;cart.set(id,cart.get(id)+1);updateCart();}
+});
+function drawer(on){$("#drawer").classList.toggle("on",on);$("#veil").classList.toggle("on",on);$("#drawer").setAttribute("aria-hidden",!on);if(on)$("#closeCart").focus();else $("#openCart").focus();}
+$("#openCart").onclick=()=>drawer(true);$("#closeCart").onclick=()=>drawer(false);$("#veil").onclick=()=>drawer(false);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")drawer(false);});
+function doCheckout(){
+  let t=0;cart.forEach((q,id)=>{t+=q*P.find(p=>p.id===id).p;});
+  const got=Math.floor(t/10);
+  const users=DB.get();users[user.email].points+=got;DB.set(users);
+  cart.clear();updateCart();drawer(false);paintUser();
+  toast("สั่งซื้อสำเร็จ ได้รับ "+got+" แต้ม");
+}
+$("#checkout").onclick=()=>{
+  if(!cart.size){toast("ยังไม่มีสินค้าในตะกร้า");return;}
+  if(!user){drawer(false);openAuth("login","เข้าสู่ระบบก่อนชำระเงิน แล้วตะกร้าของคุณจะยังอยู่ที่เดิม",()=>{drawer(true);});return;}
+  doCheckout();
+};
+
+/* toast */
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2000);}
+
+/* coupons */
+document.querySelectorAll(".coupon button").forEach(b=>b.addEventListener("click",async()=>{
+  try{await navigator.clipboard.writeText(b.dataset.code);}catch(_){}
+  toast("คัดลอกโค้ด "+b.dataset.code+" แล้ว");
+}));
+
+/* tracking */
+const STEPS=[["ผู้ขายแพ็กและส่งมอบพัสดุ","สาขาต้นทาง"],["พัสดุถึงศูนย์คัดแยก","ศูนย์กระจายสินค้า"],["พัสดุออกจัดส่งถึงผู้รับ","พนักงานกำลังนำส่ง"],["ส่งสำเร็จ","ผู้รับเซ็นรับเรียบร้อย"]];
+function track(){
+  const v=$("#tn").value.trim()||"ML";
+  let h=0;for(const ch of v)h=(h*31+ch.charCodeAt(0))%97;
+  const cur=h%4;
+  const now=new Date();
+  $("#tl").innerHTML=STEPS.map((s,i)=>{
+    const cls=i<cur?"done":i===cur?"now":"";
+    const t=new Date(now.getTime()-(cur-i)*3.5*3600e3);
+    const time=i<=cur?t.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})+" น.":"รอดำเนินการ";
+    return `<li class="${cls}"><b>${s[0]}</b><small>${s[1]} · ${time}</small></li>`}).join("");
+  $("#eta").textContent=cur===3?"พัสดุ "+v+" ส่งถึงมือผู้รับแล้ว":"พัสดุ "+v+" คาดว่าจะถึงภายใน "+(4-cur)+" ชั่วโมงข้างหน้า";
+}
+$("#trackForm").addEventListener("submit",e=>{e.preventDefault();track();});
+
+/* auth (ตัวอย่างฝั่งเบราว์เซอร์: เก็บข้อมูลใน localStorage ของเครื่องนี้เท่านั้น) */
+const DB={
+  get(){try{return JSON.parse(localStorage.getItem("ml_users")||"{}");}catch(_){return {};}},
+  set(u){try{localStorage.setItem("ml_users",JSON.stringify(u));}catch(_){}},
+  ses(){try{return localStorage.getItem("ml_session");}catch(_){return null;}},
+  setSes(e){try{e?localStorage.setItem("ml_session",e):localStorage.removeItem("ml_session");}catch(_){}}
+};
+async function hashPw(s){
+  if(window.crypto&&crypto.subtle){
+    const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("marketloop:"+s));
+    return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+  }
+  let h=5381;for(const c of "marketloop:"+s)h=((h*33)^c.charCodeAt(0))>>>0;return "f"+h;
+}
+const EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+let afterLogin=null,fails=0,lockUntil=0;
+
+function paintUser(){
+  const users=DB.get(),u=user&&users[user.email];
+  $("#loginBtn").hidden=!!user;$("#userBox").hidden=!user;
+  if(user&&u){
+    $("#ava").textContent=[...u.name][0];$("#uname").textContent=u.name;
+    $("#pName").textContent=u.name;$("#pMail").textContent=user.email;$("#pPts").textContent=u.points.toLocaleString("th-TH");
+  }
+  updateCart();
+}
+function setUser(email){user=email?{email}:null;DB.setSes(email);paintUser();}
+
+const dlg=$("#auth");
+function setTab(mode){
+  const login=mode==="login";
+  $("#loginForm").hidden=!login;$("#regForm").hidden=login;
+  $("#tabLogin").setAttribute("aria-selected",login);$("#tabReg").setAttribute("aria-selected",!login);
+  clearErrors();msg("");
+}
+function msg(t,bad){const m=$("#authMsg");m.hidden=!t;m.textContent=t||"";m.classList.toggle("bad",!!bad);}
+function clearErrors(){document.querySelectorAll("#auth .field").forEach(f=>{f.classList.remove("bad");f.querySelector(".err").hidden=true;});}
+function bad(id,text){const f=$("#"+id).closest(".field");f.classList.add("bad");const e=f.querySelector(".err");e.textContent=text;e.hidden=false;}
+function openAuth(mode,note,cb){
+  afterLogin=cb||null;setTab(mode||"login");if(note)msg(note);
+  if(!dlg.open)dlg.showModal();
+  setTimeout(()=>$(mode==="reg"?"#rName":"#lEmail").focus(),30);
+}
+function closeAuth(){dlg.close();}
+dlg.addEventListener("click",e=>{if(e.target===dlg)closeAuth();});
+$("#authClose").onclick=closeAuth;
+$("#tabLogin").onclick=()=>setTab("login");$("#tabReg").onclick=()=>setTab("reg");
+$("#loginBtn").onclick=()=>openAuth("login");
+document.querySelectorAll(".showpw").forEach(b=>b.addEventListener("click",()=>{
+  const i=b.previousElementSibling,show=i.type==="password";i.type=show?"text":"password";b.textContent=show?"ซ่อน":"แสดง";
+}));
+$("#fillDemo").onclick=()=>{$("#lEmail").value="demo@marketloop.com";$("#lPass").value="loop1234";clearErrors();msg("");};
+
+function finish(email,text){
+  setUser(email);closeAuth();toast(text);
+  if(afterLogin){const f=afterLogin;afterLogin=null;f();}
+}
+$("#loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();clearErrors();msg("");
+  const email=$("#lEmail").value.trim().toLowerCase(),pw=$("#lPass").value;
+  let ok=true;
+  if(!EMAIL.test(email)){bad("lEmail","กรอกอีเมลให้ถูกต้อง เช่น you@example.com");ok=false;}
+  if(!pw){bad("lPass","กรอกรหัสผ่าน");ok=false;}
+  if(!ok)return;
+  if(Date.now()<lockUntil){msg("ลองผิดหลายครั้งเกินไป รออีก "+Math.ceil((lockUntil-Date.now())/1000)+" วินาที แล้วลองใหม่",true);return;}
+  const u=DB.get()[email];
+  if(!u||u.hash!==await hashPw(pw)){
+    if(++fails>=5){lockUntil=Date.now()+30000;fails=0;}
+    msg("อีเมลหรือรหัสผ่านไม่ถูกต้อง ตรวจสอบอีกครั้ง หรือสมัครสมาชิกใหม่",true);return;
+  }
+  fails=0;finish(email,"ยินดีต้อนรับกลับมา "+u.name);
+  e.target.reset();
+});
+$("#regForm").addEventListener("submit",async e=>{
+  e.preventDefault();clearErrors();msg("");
+  const name=$("#rName").value.trim(),email=$("#rEmail").value.trim().toLowerCase(),pw=$("#rPass").value,pw2=$("#rPass2").value;
+  let ok=true;
+  if(name.length<2){bad("rName","กรอกชื่ออย่างน้อย 2 ตัวอักษร");ok=false;}
+  if(!EMAIL.test(email)){bad("rEmail","กรอกอีเมลให้ถูกต้อง เช่น you@example.com");ok=false;}
+  if(pw.length<8){bad("rPass","รหัสผ่านต้องยาวอย่างน้อย 8 ตัว");ok=false;}
+  if(pw2!==pw){bad("rPass2","รหัสผ่านสองช่องไม่ตรงกัน");ok=false;}
+  if(!ok)return;
+  const users=DB.get();
+  if(users[email]){bad("rEmail","อีเมลนี้สมัครไว้แล้ว ไปที่แท็บเข้าสู่ระบบได้เลย");return;}
+  users[email]={name,hash:await hashPw(pw),points:100,joined:Date.now()};DB.set(users);
+  finish(email,"สมัครสำเร็จ รับ 100 แต้มต้อนรับ");
+  e.target.reset();
+});
+
+/* user menu */
+$("#userBtn").onclick=e=>{e.stopPropagation();const on=!$("#pop").classList.contains("on");$("#pop").classList.toggle("on",on);$("#userBtn").setAttribute("aria-expanded",on);};
+document.addEventListener("click",e=>{if(!e.target.closest("#userBox")){$("#pop").classList.remove("on");$("#userBtn").setAttribute("aria-expanded","false");}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#pop").classList.remove("on");});
+$("#logout").onclick=()=>{$("#pop").classList.remove("on");setUser(null);toast("ออกจากระบบแล้ว");};
+
+async function initAuth(){
+  const users=DB.get();
+  if(!users["demo@marketloop.com"]){users["demo@marketloop.com"]={name:"สมชาย ใจดี",hash:await hashPw("loop1234"),points:250,joined:Date.now()};DB.set(users);}
+  const s=DB.ses();if(s&&users[s])user={email:s};
+  paintUser();
+}
+
+/* motion preference */
+if(matchMedia("(prefers-reduced-motion: reduce)").matches){const s=$("#loopSvg");if(s.pauseAnimations)s.pauseAnimations();}
+
+render();updateCart();track();initAuth();
+</script>
+</body>
+</html>
